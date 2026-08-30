@@ -1,0 +1,73 @@
+module RobotMonitor
+
+exports all
+
+definitions
+
+types
+  Move = <LEFT> | <RIGHT> | <UP> | <DOWN>;
+
+state Robot of
+  row : nat1
+  col : nat1
+  move : [Move]
+inv mk_Robot(r, c, -) == r >= 1 and r <= 6 and c >= 1 and c <= 6
+init s == s = mk_Robot(1, 1, nil)
+end
+
+operations
+
+  MoveRight : () ==> ()
+  MoveRight() ==
+  (
+    col := col + 1;
+    move := <RIGHT>;
+  )
+  pre col < 6 and move <> <RIGHT>;
+
+  MoveLeft : () ==> ()
+  MoveLeft() ==
+  (
+    col := col - 1;
+    move := <LEFT>;
+  )
+  pre col > 1 and move <> <LEFT>;
+
+  MoveUp : () ==> ()
+  MoveUp() ==
+  (
+    row := row - 1;
+    move := <UP>;
+  )
+  pre row > 1 and move <> <UP>;
+
+  MoveDown : () ==> ()
+  MoveDown() ==
+  (
+    row := row + 1;
+    move := <DOWN>;
+  )
+  pre row < 6 and move <> <DOWN>;
+
+  GetRow : () ==> nat1
+  GetRow() ==
+    return row;
+
+  GetCol : () ==> nat1
+  GetCol() ==
+    return col;
+
+  GetMove : () ==> [Move]
+  GetMove() ==
+    return move;
+
+  Exit : () ==> ()
+  Exit() ==
+  (
+    row := 1;
+    col := 1;
+    move := nil;
+  )
+  pre row = 6 and col = 6;
+
+end RobotMonitor
